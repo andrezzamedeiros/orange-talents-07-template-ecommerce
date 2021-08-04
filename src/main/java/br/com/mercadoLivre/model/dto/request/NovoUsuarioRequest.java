@@ -1,5 +1,6 @@
 package br.com.mercadoLivre.model.dto.request;
 
+import br.com.mercadoLivre.model.SenhaLimpa;
 import br.com.mercadoLivre.model.Usuario;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,6 +21,6 @@ public class NovoUsuarioRequest {
     }
 
     public Usuario converter(){
-        return new Usuario(email, new BCryptPasswordEncoder().encode(senha));
+        return new Usuario(email, new SenhaLimpa(senha));
     }
 }

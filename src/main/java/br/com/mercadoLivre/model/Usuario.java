@@ -2,6 +2,8 @@ package br.com.mercadoLivre.model;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -28,9 +30,11 @@ public class Usuario {
     @NotNull @PastOrPresent
     private LocalDateTime dataCadastro = LocalDateTime.now();
 
-    public Usuario( @Email @NotBlank String email, @NotBlank @Length(min = 6) String senha) {
+    public Usuario( @Email @NotBlank String email, @NotNull SenhaLimpa senhaLimpa) {
+        Assert.isTrue(StringUtils.hasLength(email), "email não pode estar em branco");
+        Assert.notNull(senhaLimpa, "A senha não pode ser nula");
         this.email = email;
-        this.senha = new BCryptPasswordEncoder().encode(senha);
+        this.senha = senhaLimpa.hash();
     }
 
     @Override
