@@ -2,6 +2,7 @@ package br.com.mercadoLivre.model.dto.request;
 
 import br.com.mercadoLivre.model.SenhaLimpa;
 import br.com.mercadoLivre.model.Usuario;
+import br.com.mercadoLivre.validations.annotations.UniqueValue;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -10,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 
 public class NovoUsuarioRequest {
 
-    @Email @NotBlank
+    @Email @NotBlank @UniqueValue(domainClass = Usuario.class, fieldName = "email")
     private String email;
     @NotBlank @Length(min = 6)
     private String senha;
