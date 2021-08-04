@@ -13,6 +13,9 @@ public class NovoUsuarioResponse {
     private String email;
     private LocalDateTime dataCadastro;
 
+    public NovoUsuarioResponse() {
+    }
+
     public NovoUsuarioResponse(Usuario usuario) {
         this.email = usuario.getEmail();
         this.dataCadastro = usuario.getDataCadastro();
