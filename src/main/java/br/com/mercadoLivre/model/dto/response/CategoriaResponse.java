@@ -2,11 +2,11 @@ package br.com.mercadoLivre.model.dto.response;
 
 import br.com.mercadoLivre.model.Categoria;
 
-public class NovaCategoriaResponse {
+public class CategoriaResponse {
 
     private String nome;
 
-    public NovaCategoriaResponse(Categoria categoria) {
+    public CategoriaResponse(Categoria categoria) {
         this.nome = categoria.getNome();
     }
 

@@ -1,5 +1,6 @@
-package br.com.mercadoLivre.validations.annotations;
+package br.com.mercadoLivre.validations;
 
+import br.com.mercadoLivre.validations.annotations.UniqueValue;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;

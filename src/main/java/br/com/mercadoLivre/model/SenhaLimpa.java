@@ -8,15 +8,13 @@ import javax.validation.constraints.NotBlank;
 
 public class SenhaLimpa {
 
-    private String senha;
+    private String passwordPlainText;
 
-    public SenhaLimpa(@NotBlank @Length(min = 6) String senha) {
-        Assert.hasLength(senha, "senha não pode ser em branco");
-        Assert.isTrue(senha.length() >= 6, "insira no mínimo 6 caracteres");
-        this.senha = senha;
+    public SenhaLimpa ( String passwordPlainText ) {
+        this.passwordPlainText = passwordPlainText;
     }
 
-    public String hash(){
-        return new BCryptPasswordEncoder().encode(senha);
+    public String getPasswordPlainText () {
+        return passwordPlainText;
     }
 }

@@ -1,26 +1,23 @@
 package br.com.mercadoLivre.model.dto.request;
 
 import br.com.mercadoLivre.model.Categoria;
-import br.com.mercadoLivre.validations.annotations.ExistsId;
-import br.com.mercadoLivre.validations.annotations.ExistsOrNullableId;
 import br.com.mercadoLivre.validations.annotations.UniqueValue;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
-import javax.validation.constraints.Null;
 
-public class NovaCategoriaRequest {
+public class CategoriaRequest {
 
     @UniqueValue(domainClass = Categoria.class, fieldName = "nome")
     private String nome;
     @Nullable
     private Long idCategoriaMae;
 
-    public NovaCategoriaRequest() {
+    public CategoriaRequest() {
     }
 
-    public NovaCategoriaRequest(String nome, Long idCategoriaMae) {
+    public CategoriaRequest(String nome, Long idCategoriaMae) {
         this.nome = nome;
         this.idCategoriaMae = idCategoriaMae;
     }

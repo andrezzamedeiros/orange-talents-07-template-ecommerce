@@ -1,4 +1,6 @@
-package br.com.mercadoLivre.validations.annotations;
+package br.com.mercadoLivre.validations;
+
+import br.com.mercadoLivre.validations.annotations.ExistsId;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -7,7 +9,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
-public class ExistsOrNullableIdValidator implements ConstraintValidator<ExistsOrNullableId, Object> {
+public class ExistsIdValidator implements ConstraintValidator<ExistsId, Object> {
 
     @PersistenceContext
     EntityManager manager;
@@ -17,7 +19,7 @@ public class ExistsOrNullableIdValidator implements ConstraintValidator<ExistsOr
 
 
     @Override
-    public void initialize(ExistsOrNullableId params) {
+    public void initialize(ExistsId params) {
         domainAtributte = params.fieldName();
         klass = params.domainClass();
     }
@@ -25,9 +27,6 @@ public class ExistsOrNullableIdValidator implements ConstraintValidator<ExistsOr
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext constraintValidatorContext) {
         try{
-            if(domainAtributte == null){
-                return true;
-            }
             Query query = manager.createQuery("SELECT 1 FROM " + klass.getName() + " where " +domainAtributte + " =:value");
             query.setParameter("value", value);
             List resultList = query.getResultList();

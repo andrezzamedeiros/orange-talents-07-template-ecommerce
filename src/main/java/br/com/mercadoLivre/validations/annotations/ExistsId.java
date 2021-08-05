@@ -1,5 +1,7 @@
 package br.com.mercadoLivre.validations.annotations;
 
+import br.com.mercadoLivre.validations.ExistsIdValidator;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.ElementType;

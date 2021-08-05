@@ -1,8 +1,8 @@
 package br.com.mercadoLivre.controller;
 
-import br.com.mercadoLivre.model.Usuario;
-import br.com.mercadoLivre.model.dto.request.NovoUsuarioRequest;
-import br.com.mercadoLivre.model.dto.response.NovoUsuarioResponse;
+import br.com.mercadoLivre.model.User;
+import br.com.mercadoLivre.model.dto.request.UsuarioRequest;
+import br.com.mercadoLivre.model.dto.response.UsuarioResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,9 +23,9 @@ public class UsuarioController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<NovoUsuarioResponse> save(@RequestBody @Valid NovoUsuarioRequest usuarioRequest){
-        Usuario usuario = usuarioRequest.converter();
-        manager.persist(usuario);
-        return ResponseEntity.ok(new NovoUsuarioResponse(usuario));
+    public ResponseEntity<UsuarioResponse> save(@RequestBody @Valid UsuarioRequest usuarioRequest){
+        User user = usuarioRequest.converter();
+        manager.persist(user);
+        return ResponseEntity.ok(new UsuarioResponse(user));
     }
 }
