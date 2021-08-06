@@ -2,6 +2,7 @@ package br.com.mercadoLivre.model.dto.request;
 
 import br.com.mercadoLivre.model.CaracteristicaProduto;
 import br.com.mercadoLivre.model.Produto;
+import br.com.mercadoLivre.validations.annotations.UniqueValue;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;

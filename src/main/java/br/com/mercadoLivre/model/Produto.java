@@ -1,8 +1,10 @@
 package br.com.mercadoLivre.model;
 
 import br.com.mercadoLivre.model.dto.request.CaracteristicaProdutoRequest;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -16,24 +18,30 @@ public class Produto {
     private Long id;
     @NotBlank @NotNull
     private String nome;
-    @NotNull @Min(value = 1)
+    @NotNull @Positive
     private Double valor;
-    @NotNull @Min(value = 1)
+    @NotNull @Positive
     private Integer quantidade;
-//    private List<CaracteristicaProduto> caracteristicas = new ArrayList<>();
-    @NotNull @NotBlank
+    @NotNull @NotBlank @Length(max = 1000)
     private String descricao;
     @NotNull @ManyToOne
     private Categoria categoria;
-    private LocalDateTime dataCadastro;
+    private LocalDateTime dataCadastro = LocalDateTime.now();
 
-    public Produto(String nome, Double valor, Integer quantidade, String descricao, Categoria categoria, LocalDateTime dataCadastro) {
+    @NotNull @Valid @ManyToOne
+    private User usuario;
+
+    public Produto() {
+    }
+
+    public Produto(@NotBlank String nome, @Positive Double valor, @Positive Integer quantidade, @NotBlank @Length(max = 1000)
+            String descricao, @NotNull@Valid Categoria categoria ,User usuario) {
         this.nome = nome;
         this.valor = valor;
         this.quantidade = quantidade;
         this.descricao = descricao;
         this.categoria = categoria;
-        this.dataCadastro = LocalDateTime.now();
+        this.usuario = usuario;
     }
 
     public Long getId() {
@@ -52,10 +60,6 @@ public class Produto {
         return quantidade;
     }
 
-//    public List<CaracteristicaProduto> getCaracteristicas() {
-//        return caracteristicas;
-//    }
-
     public String getDescricao() {
         return descricao;
     }
@@ -66,5 +70,9 @@ public class Produto {
 
     public LocalDateTime getDataCadastro() {
         return dataCadastro;
+    }
+
+    public User getUsuario() {
+        return usuario;
     }
 }
