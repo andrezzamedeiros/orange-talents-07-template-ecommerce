@@ -31,6 +31,9 @@ public class Produto {
     @NotNull @Valid @ManyToOne
     private User usuario;
 
+    @OneToMany (mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set <ImagemProduto> imagens = new HashSet<>();
+
     public Produto() {
     }
 
@@ -74,5 +77,14 @@ public class Produto {
 
     public User getUsuario() {
         return usuario;
+    }
+
+    public void associaImagens(Set<String> links){
+        Set<ImagemProduto> imagensAssociadas = links.stream().map(link -> new ImagemProduto(link, this)).collect(Collectors.toSet());
+        this.imagens.addAll(imagensAssociadas);
+    }
+
+    public boolean pertenceAoUsuario(User user) {
+        return this.usuario.getLogin().equals(user.getLogin());
     }
 }

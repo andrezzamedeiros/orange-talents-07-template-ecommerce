@@ -11,10 +11,14 @@ import br.com.mercadoLivre.repositories.CaracteristicaProdutoRepository;
 import br.com.mercadoLivre.repositories.CategoriaRepository;
 import br.com.mercadoLivre.repositories.ProdutoRepository;
 import br.com.mercadoLivre.repositories.UserRepository;
+import br.com.mercadoLivre.uploader.Uploader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -42,6 +46,9 @@ public class ProdutoController {
     @PersistenceContext
     private EntityManager manager;
 
+    @Autowired
+    private Uploader uploader;
+
     @PostMapping
     @Transactional
     public ResponseEntity<ProdutoResponse> save(@RequestBody @Valid ProdutoRequest produtoRequest, @AuthenticationPrincipal User user){
@@ -57,15 +64,21 @@ public class ProdutoController {
         return ResponseEntity.ok().body(produtoRepository.findAll());
     }
 
-    @PostMapping
-    @RequestMapping("/imagens/{idProduto}")
-    public ResponseEntity<List<String>> saveImage (@PathVariable Long id, @RequestBody @Valid List<ImagemProdutoRequest> listImagemProdutoRequest){
-        Optional<Produto> produto = produtoRepository.findById(id);
-        if(produto.isPresent()){
-            listImagemProdutoRequest.forEach(imagemProduto -> manager.persist(imagemProduto.converter(produto.get())));
-        }else{
-            return ResponseEntity.notFound().build();
+    @PostMapping (consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+    produces = {MediaType.APPLICATION_JSON_VALUE} )
+    @RequestMapping("/{id}/imagens")
+    @Transactional
+    public ResponseEntity<String> uploadImagem (@PathVariable("id") Long id, @Valid ImagemProdutoRequest imagemProdutoRequest, @AuthenticationPrincipal User user){
+        Produto produto = manager.find(Produto.class, id);
+        if(!produto.pertenceAoUsuario(user)){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
-        return ResponseEntity.ok(listImagemProdutoRequest.stream().map(x -> x.getUrlImagem()).collect(Collectors.toList()));
+
+        Set<String> links = uploader.envia(imagemProdutoRequest.getImagens());
+
+        produto.associaImagens(links);
+        manager.merge(produto);
+
+        return ResponseEntity.ok(produto.toString());
     }
 }

@@ -1,26 +1,23 @@
 package br.com.mercadoLivre.model.dto.request;
 
-import br.com.mercadoLivre.model.ImagemProduto;
-import br.com.mercadoLivre.model.Produto;
-import org.hibernate.validator.constraints.URL;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ImagemProdutoRequest {
 
-    @NotBlank @NotNull @URL
-    private String urlImagem;
+    @NotNull
+    @Size(min = 1)
+   private List<MultipartFile> imagens = new ArrayList<>();
 
-    public ImagemProdutoRequest(String urlImagem) {
-        this.urlImagem = urlImagem;
+    public List<MultipartFile> getImagens() {
+        return imagens;
     }
 
-    public String getUrlImagem() {
-        return urlImagem;
-    }
-
-    public ImagemProduto converter(Produto produto){
-        return new ImagemProduto(this.urlImagem, produto);
+    public void setImages (List<MultipartFile> imagens ) {
+        this.imagens = imagens;
     }
 }
